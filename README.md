@@ -217,11 +217,17 @@ echo 'export VLSI_HOME=$HOME/VLSI' >> ~/.bashrc
 echo 'export PATH=$VLSI_HOME/tools/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 ```
+GTKWave is a **waveform viewer** that visualizes simulation outputs from `.vcd` or `.fst` files. It enables signal-level debugging by showing how inputs and outputs evolve over time.
 
-**Checkpoint:** Confirm tools are accessible from terminal.
-- ![Image](Screenshot 2025-10-03 220338.png)
-- ![Image](Screenshot 2025-10-03 220330.png)
-- ![Image](Screenshot 2025-10-03 220933.png)
+* **Role in Flow:** Debugging and waveform inspection.
+* **Features:** zooming, signal grouping, cursor-based measurement, and hierarchical viewing.
+* **Use Case:** Essential for confirming functional correctness and validating timing behavior.
+- ![Image](DAY0-0.png)
+- ![Image](DAY0-1.png)
+- ![Image](DAY0-2.png)
+- ![Image](DAY0-3.png)
+- ![Image](DAY0-4.png)
+- ![Image](DAY0-5.png)
 
 
 ---
