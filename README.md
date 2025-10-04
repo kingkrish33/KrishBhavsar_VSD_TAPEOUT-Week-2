@@ -217,12 +217,10 @@ echo 'export VLSI_HOME=$HOME/VLSI' >> ~/.bashrc
 echo 'export PATH=$VLSI_HOME/tools/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 ```
-- ![Image](Screenshot 2025-10-03 220330.png)
-- ![Image](Screenshot 2025-10-03 220330.png)
-- ![Image](DAY0-2.png)
-- ![Image](DAY0-3.png)
-- ![Image](DAY0-4.png)
-- ![Image](DAY0-5.png)
+- ![Image](https://github.com/kingkrish33/KrishBhavsar_VSD_TAPEOUT-Week-2/blob/main/Screenshot%202025-10-03%20220330.png)
+- ![Image](https://github.com/kingkrish33/KrishBhavsar_VSD_TAPEOUT-Week-2/blob/main/Screenshot%202025-10-03%20220338.png)
+- ![Image](https://github.com/kingkrish33/KrishBhavsar_VSD_TAPEOUT-Week-2/blob/main/Screenshot%202025-10-03%20220933.png)
+
 
 
 ---
@@ -269,9 +267,9 @@ source sp_env/bin/activate
 sandpiper-saas -i ./src/module/*.tlv -o rvmyth.v --bestsv --noline -p verilog --outdir ./src/module/
 ls -la src/module/rvmyth.v
 ```
-- ![Image](Screenshot 2025-10-03 221049.png)
-- ![Image](Screenshot 2025-10-03 221141.png)
-- ![Image](Screenshot 2025-10-03 221910.png)
+- ![Image](https://github.com/kingkrish33/KrishBhavsar_VSD_TAPEOUT-Week-2/blob/main/Screenshot%202025-10-03%20221049.png)
+- ![Image](https://github.com/kingkrish33/KrishBhavsar_VSD_TAPEOUT-Week-2/blob/main/Screenshot%202025-10-03%20221141.png)
+- ![Image](https://github.com/kingkrish33/KrishBhavsar_VSD_TAPEOUT-Week-2/blob/main/Screenshot%202025-10-03%20221910.png)
 
 
 ---
@@ -319,8 +317,8 @@ Time    Reset  CLK    RV_TO_DAC    DAC_OUT
 ...
 Simulation completed successfully
 ```
-- ![Image](Screenshot 2025-10-03 221925.png)
-- ![Image](Screenshot 2025-10-03 222622.png)
+- ![Image](https://github.com/kingkrish33/KrishBhavsar_VSD_TAPEOUT-Week-2/blob/main/Screenshot%202025-10-03%20221925.png)
+- ![Image](https://github.com/kingkrish33/KrishBhavsar_VSD_TAPEOUT-Week-2/blob/main/Screenshot%202025-10-03%20222622.png)
 
 
 **Screenshot Placeholder:** `docs/images/terminal/simulation-execution.png`
@@ -361,8 +359,8 @@ gtkwave output/pre_synth_sim/pre_synth_sim.vcd &
 * Analog output range: 0V → 3.3V
 
 
-- ![Image](Screenshot 2025-10-03 224756.png)
-- ![Image](Screenshot 2025-10-03 225126.png)
+- ![Image](https://github.com/kingkrish33/KrishBhavsar_VSD_TAPEOUT-Week-2/blob/main/Screenshot%202025-10-03%20224756.png)
+- ![Image](https://github.com/kingkrish33/KrishBhavsar_VSD_TAPEOUT-Week-2/blob/main/Screenshot%202025-10-03%20225126.png)
 ---
 
 ## Session 5: Post-synthesis Simulation
