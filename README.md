@@ -218,7 +218,7 @@ echo 'export PATH=$VLSI_HOME/tools/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 ```
 - ![Image](Screenshot 2025-10-03 220330.png)
-- ![Image](DAY0-1.png)
+- ![Image](Screenshot 2025-10-03 220330.png)
 - ![Image](DAY0-2.png)
 - ![Image](DAY0-3.png)
 - ![Image](DAY0-4.png)
