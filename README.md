@@ -136,9 +136,360 @@ Week 2 was a **theoretical and practical bridge** in the SoC design journey.
 - Exposure to **VSDBabySoC** as a controlled environment that mirrors real-world SoC challenges but in a manageable form.
 
 By completing this phase, a designer develops confidence in moving toward **hardware synthesis and physical design**, knowing that the functional intent of the design is well-verified.
+# Week 2 Part 2 - Functional Modeling Laboratory
 
 ---
 
-🔥 Now this is a **workspace-style draft** (detailed, flowing, descriptive, academic).
+## Laboratory Objective
 
-Do you want me to **make it even more lengthy (with sub-sections for every block like PLL, DAC, CPU in detail, with diagrams placeholders, use-cases, pros/cons, etc.)** — or should I stop here and move this into a **GitHub Markdown structured code** version?
+The goal of this lab is to **practice functional modeling and simulation** of the VSDBabySoC using **pre-synthesis and post-synthesis simulations**, **waveform analysis**, and **verification of functional correctness**. Students will also gain hands-on experience with **EDA tools**, **TL-Verilog**, **Verilog simulation**, and **professional documentation practices**.
+
+---
+
+## Table of Contents
+
+1. [Session 1: Environment Setup](#session-1-environment-setup)
+2. [Session 2: Project Preparation](#session-2-project-preparation)
+3. [Session 3: Pre-synthesis Simulation](#session-3-pre-synthesis-simulation)
+4. [Session 4: Waveform Analysis](#session-4-waveform-analysis)
+5. [Session 5: Post-synthesis Simulation](#session-5-post-synthesis-simulation)
+6. [Session 6: Results Documentation](#session-6-results-documentation)
+7. [Session 7: Troubleshooting & Review](#session-7-troubleshooting--review)
+8. [Appendices](#appendices)
+9. [References](#references)
+
+---
+
+## Session 1: Environment Setup
+
+**Objective:** Install all required tools and set up the lab environment.
+
+### 1.1 System Requirements
+
+**Hardware:**
+
+* Minimum 4GB RAM (8GB recommended)
+* 10GB free disk space
+* Intel/AMD x64 processor
+
+**Software:**
+
+* Ubuntu 18.04 LTS or later
+* Python 3.6+
+* Git version control
+
+### 1.2 Tool Installation
+
+```bash
+# Update system packages
+sudo apt update && sudo apt upgrade -y
+
+# Install essential development tools
+sudo apt install -y build-essential git python3 python3-pip make cmake pkg-config iverilog gtkwave
+```
+
+**Expected Output:** Packages installed successfully.
+**Screenshot Placeholder:** `docs/images/setup/package-installation.png`
+
+### 1.3 Python Environment
+
+```bash
+# Create and activate virtual environment
+python3 -m venv sp_env
+source sp_env/bin/activate
+
+# Install required Python packages
+pip install pyyaml click sandpiper-saas
+```
+
+**Verification:**
+
+```bash
+which iverilog
+which gtkwave
+sandpiper-saas --version
+```
+
+**Screenshot Placeholder:** `docs/images/setup/tool-verification.png`
+
+### 1.4 Environment Variables
+
+```bash
+echo 'export VLSI_HOME=$HOME/VLSI' >> ~/.bashrc
+echo 'export PATH=$VLSI_HOME/tools/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
+
+**Checkpoint:** Confirm tools are accessible from terminal.
+
+---
+
+## Session 2: Project Preparation
+
+**Objective:** Clone VSDBabySoC repository, analyze sources, and convert TL-Verilog to Verilog.
+
+### 2.1 Repository Cloning
+
+```bash
+mkdir -p ~/VLSI
+cd ~/VLSI
+git clone https://github.com/manili/VSDBabySoC.git
+cd VSDBabySoC
+ls -la
+```
+
+**Expected Structure:**
+
+```
+src/module/       <- Verilog/TL-Verilog sources
+Makefile
+README.md
+output/
+```
+
+**Screenshot Placeholder:** `docs/images/setup/repo-structure.png`
+
+### 2.2 Source Code Analysis
+
+| File           | Purpose              | Location      |
+| -------------- | -------------------- | ------------- |
+| `rvmyth.tlv`   | RISC-V processor     | `src/module/` |
+| `vsdbabysoc.v` | Top-level SoC        | `src/module/` |
+| `avsdpll.v`    | PLL model            | `src/module/` |
+| `avsddac.v`    | DAC model            | `src/module/` |
+| `testbench.v`  | Simulation testbench | `src/module/` |
+
+### 2.3 TL-Verilog to Verilog Conversion
+
+```bash
+source sp_env/bin/activate
+sandpiper-saas -i ./src/module/*.tlv -o rvmyth.v --bestsv --noline -p verilog --outdir ./src/module/
+ls -la src/module/rvmyth.v
+```
+
+**Expected Output:** TL-Verilog successfully converted to Verilog.
+**Screenshot Placeholder:** `docs/images/terminal/tlv-conversion.png`
+
+---
+
+## Session 3: Pre-synthesis Simulation
+
+**Objective:** Compile and simulate the design using Icarus Verilog.
+
+### 3.1 Create Output Directories
+
+```bash
+mkdir -p output/pre_synth_sim output/post_synth_sim logs
+```
+
+### 3.2 Compile Verilog Sources
+
+```bash
+cd ~/VLSI/VSDBabySoC
+iverilog -o output/pre_synth_sim/pre_synth_sim.out \
+-DPRE_SYNTH_SIM \
+-I src/include -I src/module \
+src/module/testbench.v \
+src/module/vsdbabysoc.v \
+src/module/rvmyth.v \
+src/module/avsdpll.v \
+src/module/avsddac.v
+```
+
+**Expected Output:** Compilation successful.
+**Screenshot Placeholder:** `docs/images/terminal/compilation-success.png`
+
+### 3.3 Simulation Execution
+
+```bash
+cd output/pre_synth_sim
+./pre_synth_sim.out
+ls -la *.vcd
+```
+
+**Simulation Output Example:**
+
+```
+VCD info: dumpfile pre_synth_sim.vcd opened for output.
+Time    Reset  CLK    RV_TO_DAC    DAC_OUT
+0       1      0      xxxxxxxxxx   0.000000
+...
+Simulation completed successfully
+```
+
+**Screenshot Placeholder:** `docs/images/terminal/simulation-execution.png`
+
+---
+
+## Session 4: Waveform Analysis
+
+**Objective:** Analyze simulation waveforms using GTKWave.
+
+### 4.1 Launch GTKWave
+
+```bash
+gtkwave output/pre_synth_sim/pre_synth_sim.vcd &
+```
+
+### 4.2 Signal Selection
+
+* Add signals: `CLK`, `reset`, `OUT[9:0]`, `dac.OUT`
+* DAC output: Right-click → Data Format → Analog → Step
+
+**Screenshot Placeholder:** `docs/images/waveforms/signal-selection-process.png`
+
+### 4.3 Waveform Analysis
+
+| Signal     | Purpose          | Expected Behavior                     |
+| ---------- | ---------------- | ------------------------------------- |
+| `CLK`      | System clock     | Square wave, ~100MHz                  |
+| `reset`    | System reset     | High initially, then low              |
+| `OUT[9:0]` | Digital data bus | Changing values after reset           |
+| `dac.OUT`  | Analog output    | Step waveform following digital input |
+
+**Measurements Checklist:**
+
+* Clock period: 10 ns
+* Reset duration: ~50 ns
+* Data transitions: ≥15
+* Analog output range: 0V → 3.3V
+
+**Screenshot Placeholder:** `docs/images/waveforms/complete-waveform-analysis.png`
+
+---
+
+## Session 5: Post-synthesis Simulation
+
+**Objective:** Attempt synthesis and document known issues.
+
+### 5.1 Synthesis Attempt
+
+```bash
+source sp_env/bin/activate
+make synth
+```
+
+### 5.2 Known Issue
+
+```
+ERROR: Assert `p != NULL' failed in kernel/yosys.cc:453.
+```
+
+**Impact:** Post-synthesis simulation cannot be completed. Pre-synthesis objectives can still be fulfilled.
+**Screenshot Placeholder:** `docs/images/terminal/synthesis-error.png`
+
+### 5.3 Alternative Approach
+
+* Use pre-synthesized netlist: `output/synth/vsdbabysoc.synth.v`
+* Continue waveform analysis and lab documentation
+
+---
+
+## Session 6: Results Documentation
+
+**Objective:** Collect all logs, screenshots, and explanations.
+
+```bash
+mkdir -p docs/lab/simulation-logs
+cp output/pre_synth_sim/*.log docs/lab/simulation-logs/
+cp output/pre_synth_sim/simulation_output.txt docs/lab/simulation-logs/
+cp synthesis.log docs/lab/simulation-logs/synthesis_error.log
+```
+
+**Deliverables Checklist:**
+
+* Simulation logs
+* GTKWave screenshots
+* Technical explanations
+* Post-synthesis error documentation
+
+---
+
+## Session 7: Troubleshooting & Review
+
+**Common Issues & Fixes:**
+
+* `sandpiper-saas: command not found` → activate env, reinstall
+* `iverilog: command not found` → install Icarus Verilog
+* No VCD → verify `$dumpfile` and `$dumpvars` in testbench
+* Analog waveform missing → select `dac.OUT` in GTKWave, set Analog → Step
+* Post-synthesis errors → document, proceed with pre-synth results
+
+**Review Questions:**
+
+1. Difference between pre-synthesis and post-synthesis simulation?
+2. How does DAC output correspond to processor digital bus?
+3. Why is waveform analysis important?
+
+---
+
+## Appendices
+
+### Appendix A: Essential Commands
+
+```bash
+source sp_env/bin/activate
+sandpiper-saas -i *.tlv -o *.v
+iverilog -o sim.out *.v
+./sim.out
+gtkwave file.vcd &
+make clean
+```
+
+### Appendix B: File Locations
+
+```
+~/VLSI/VSDBabySoC/
+├── src/module/           <- Source Verilog files
+├── output/pre_synth_sim/ <- Pre-synthesis results
+├── docs/images/          <- Screenshots
+└── logs/                 <- Log files
+```
+
+### Appendix C: Success Criteria
+
+* Successful Icarus Verilog compilation
+* VCD file generation & GTKWave visualization
+* Correct waveforms for clock, reset, data bus, DAC
+* Complete documentation with screenshots
+
+---
+
+## References
+
+* [VSDBabySoC Project](https://github.com/manili/VSDBabySoC)
+* [Icarus Verilog Documentation](http://iverilog.icarus.com/)
+* [GTKWave User Guide](http://gtkwave.sourceforge.net/gtkwave.pdf)
+* [TL-Verilog Documentation](https://www.redwoodeda.com/tl-verilog)
+* RISC-V ISA Specification: [riscv.org](https://riscv.org/specifications/)
+* Mixed-Signal System Integration & Functional Verification textbooks
+
+---
+
+## Week 2 Achievement Summary
+
+**Theoretical Mastery:**
+
+* SoC design principles
+* VSDBabySoC architecture analysis
+* Professional documentation skills
+
+**Practical Skills:**
+
+* Icarus Verilog & GTKWave proficiency
+* TL-Verilog conversion
+* Waveform analysis and debugging
+
+**Technical Accomplishments:**
+
+* Pre-synthesis functional verification
+* Complete simulation environment setup
+* DAC analog output verification
+
+**Professional Development:**
+
+* Systematic troubleshooting
+* Technical reporting & documentation
+* Lab session management
+
+**Week 2 Status: COMPLETE ✅**
