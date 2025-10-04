@@ -188,8 +188,6 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install -y build-essential git python3 python3-pip make cmake pkg-config iverilog gtkwave
 ```
 
-**Expected Output:** Packages installed successfully.
-**Screenshot Placeholder:** `docs/images/setup/package-installation.png`
 
 ### 1.3 Python Environment
 
@@ -221,6 +219,10 @@ source ~/.bashrc
 ```
 
 **Checkpoint:** Confirm tools are accessible from terminal.
+- ![Image](Screenshot 2025-10-03 220338.png)
+- ![Image](Screenshot 2025-10-03 220330.png)
+- ![Image](Screenshot 2025-10-03 220933.png)
+
 
 ---
 
@@ -266,9 +268,10 @@ source sp_env/bin/activate
 sandpiper-saas -i ./src/module/*.tlv -o rvmyth.v --bestsv --noline -p verilog --outdir ./src/module/
 ls -la src/module/rvmyth.v
 ```
+- ![Image](Screenshot 2025-10-03 221049.png)
+- ![Image](Screenshot 2025-10-03 221141.png)
+- ![Image](Screenshot 2025-10-03 221910.png)
 
-**Expected Output:** TL-Verilog successfully converted to Verilog.
-**Screenshot Placeholder:** `docs/images/terminal/tlv-conversion.png`
 
 ---
 
@@ -296,8 +299,7 @@ src/module/avsdpll.v \
 src/module/avsddac.v
 ```
 
-**Expected Output:** Compilation successful.
-**Screenshot Placeholder:** `docs/images/terminal/compilation-success.png`
+
 
 ### 3.3 Simulation Execution
 
@@ -316,6 +318,9 @@ Time    Reset  CLK    RV_TO_DAC    DAC_OUT
 ...
 Simulation completed successfully
 ```
+- ![Image](Screenshot 2025-10-03 221925.png)
+- ![Image](Screenshot 2025-10-03 222622.png)
+
 
 **Screenshot Placeholder:** `docs/images/terminal/simulation-execution.png`
 
@@ -354,8 +359,9 @@ gtkwave output/pre_synth_sim/pre_synth_sim.vcd &
 * Data transitions: ≥15
 * Analog output range: 0V → 3.3V
 
-**Screenshot Placeholder:** `docs/images/waveforms/complete-waveform-analysis.png`
 
+- ![Image](Screenshot 2025-10-03 224756.png)
+- ![Image](Screenshot 2025-10-03 225126.png)
 ---
 
 ## Session 5: Post-synthesis Simulation
@@ -375,8 +381,6 @@ make synth
 ERROR: Assert `p != NULL' failed in kernel/yosys.cc:453.
 ```
 
-**Impact:** Post-synthesis simulation cannot be completed. Pre-synthesis objectives can still be fulfilled.
-**Screenshot Placeholder:** `docs/images/terminal/synthesis-error.png`
 
 ### 5.3 Alternative Approach
 
